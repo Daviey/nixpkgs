@@ -34,6 +34,9 @@ buildNpmPackage (finalAttrs: {
 
   src = patchedSource;
 
+  # Fix version detection to use build-time TM_PUBLIC_VERSION
+  patches = [ ./fix-version-detection.patch ];
+
   # Hash for patched lockfile (generated with prefetch-npm-deps)
   npmDepsHash = "sha256-2dl9SQTtLldCjYvXP8JnXuQKqgAvMjLeIDh0AX9TYgE=";
 
@@ -59,7 +62,7 @@ buildNpmPackage (finalAttrs: {
     PUPPETEER_SKIP_DOWNLOAD = 1;
   };
 
-  # Custom install check - version detection returns "unknown" but binary works
+  # Custom install check - verify version and functionality
   doInstallCheck = true;
   installCheckPhase = ''
     runHook preInstallCheck
@@ -70,13 +73,20 @@ buildNpmPackage (finalAttrs: {
       exit 1
     fi
 
+    # Verify version is correct
+    VERSION=$("$out/bin/task-master" --version 2>&1)
+    if [ "$VERSION" != "${finalAttrs.version}" ]; then
+      echo "Error: Expected version ${finalAttrs.version}, got: $VERSION"
+      exit 1
+    fi
+
     # Verify binary runs and shows help
     if ! "$out/bin/task-master" --help 2>&1 | grep -q "Task Master CLI"; then
       echo "Error: task-master --help did not produce expected output"
       exit 1
     fi
 
-    echo "✓ task-master binary works correctly"
+    echo "✓ task-master version ${finalAttrs.version} works correctly"
 
     runHook postInstallCheck
   '';

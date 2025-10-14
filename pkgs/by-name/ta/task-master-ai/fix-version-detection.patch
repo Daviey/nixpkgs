@@ -1,0 +1,31 @@
+--- a/src/utils/getVersion.js
++++ b/src/utils/getVersion.js
+@@ -1,10 +1,25 @@
+-import packageJson from '../../package.json' with { type: 'json' };
++import { readFileSync } from 'fs';
++import { fileURLToPath } from 'url';
++import { dirname, join } from 'path';
+
+ /**
+- * Reads the version from the nearest package.json relative to this file.
++ * Reads the version from build-time injected TM_PUBLIC_VERSION or package.json.
+  * Returns 'unknown' if not found or on error.
+  * @returns {string} The version string or 'unknown'.
+  */
+ export function getTaskMasterVersion() {
+-	return packageJson.version || 'unknown';
++	// Use build-time injected version first (set by tsdown.config.ts)
++	if (process.env.TM_PUBLIC_VERSION) {
++		return process.env.TM_PUBLIC_VERSION;
++	}
++
++	// Fallback: read package.json directly
++	try {
++		const __filename = fileURLToPath(import.meta.url);
++		const __dirname = dirname(__filename);
++		const packageJson = JSON.parse(readFileSync(join(__dirname, '../../package.json'), 'utf8'));
++		return packageJson.version || 'unknown';
++	} catch (error) {
++		return 'unknown';
++	}
+ }
