@@ -51,7 +51,10 @@ buildNpmPackage (finalAttrs: {
     "--legacy-peer-deps"
   ];
 
-  makeWrapperArgs = [ "--prefix PATH : ${lib.makeBinPath [ nodejs ]}" ];
+  makeWrapperArgs = [
+    "--prefix PATH : ${lib.makeBinPath [ nodejs ]}"
+    "--set TM_PUBLIC_VERSION ${finalAttrs.version}"
+  ];
 
   passthru.updateScript = nix-update-script { };
 
