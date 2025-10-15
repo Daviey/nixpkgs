@@ -30,7 +30,7 @@ in
 
 buildNpmPackage (finalAttrs: {
   pname = "task-master-ai";
-  version = "0.29.0";
+  version = "0.29.0+b30b3d2";
 
   src = patchedSource;
 
