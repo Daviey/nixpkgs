@@ -17,7 +17,7 @@ let
     src = fetchFromGitHub {
       owner = "Daviey";
       repo = "claude-task-master";
-      rev = "7318ceb57f0b37dd7a0f1ccb0f1980839c871ece";
+      rev = "b30b3d24d7e6e170d708b64aadb2e649354b237a";
       hash = "sha256-wvoTamtr18evvp8g6wb6ZWWtKMfow0gJr+hjurSuPqQ=";
     };
     dontBuild = true;
