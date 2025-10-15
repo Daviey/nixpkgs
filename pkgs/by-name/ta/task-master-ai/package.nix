@@ -15,10 +15,10 @@ let
   patchedSource = stdenv.mkDerivation {
     name = "task-master-ai-source";
     src = fetchFromGitHub {
-      owner = "eyaltoledano";
+      owner = "Daviey";
       repo = "claude-task-master";
-      tag = "task-master-ai@0.29.0";
-      hash = "sha256-Tvf8VZhiUGiI3BkGZxKlLVhW+6ppKPS0Qv1Xu3PQ+y4=";
+      rev = "98ff44da2868aa1d7d6e459274ae438ccef2f930";
+      hash = "sha256-fiLa67kZYevkoXvFQeZVmkiUrpjQDOo61SVvpLFfI0Y=";
     };
     dontBuild = true;
     installPhase = ''
@@ -33,9 +33,6 @@ buildNpmPackage (finalAttrs: {
   version = "0.29.0";
 
   src = patchedSource;
-
-  # Fix version detection to use build-time TM_PUBLIC_VERSION
-  patches = [ ./fix-version-detection.patch ];
 
   # Hash for patched lockfile (generated with prefetch-npm-deps)
   npmDepsHash = "sha256-2dl9SQTtLldCjYvXP8JnXuQKqgAvMjLeIDh0AX9TYgE=";
@@ -60,6 +57,8 @@ buildNpmPackage (finalAttrs: {
 
   env = {
     PUPPETEER_SKIP_DOWNLOAD = 1;
+    # Inject version for build-time bundling (used by tsdown.config.ts)
+    TM_PUBLIC_VERSION = finalAttrs.version;
   };
 
   # Custom install check - verify version and functionality
