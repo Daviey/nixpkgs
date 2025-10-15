@@ -17,8 +17,8 @@ let
     src = fetchFromGitHub {
       owner = "Daviey";
       repo = "claude-task-master";
-      rev = "b30b3d24d7e6e170d708b64aadb2e649354b237a";
-      hash = "sha256-wvoTamtr18evvp8g6wb6ZWWtKMfow0gJr+hjurSuPqQ=";
+      rev = "8d47e748b63b01082f026a0bb7af621d84e2dff2";
+      hash = "sha256-TFApzPeGiIXgfVt+XalhawiKWAjg0GJkVX0cGo8lw8s=";
     };
     dontBuild = true;
     installPhase = ''
@@ -30,7 +30,7 @@ in
 
 buildNpmPackage (finalAttrs: {
   pname = "task-master-ai";
-  version = "0.29.0+b30b3d2";
+  version = "0.29.0+8d47e74";
 
   src = patchedSource;
 
