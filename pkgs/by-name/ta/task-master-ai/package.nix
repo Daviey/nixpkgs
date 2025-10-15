@@ -17,8 +17,8 @@ let
     src = fetchFromGitHub {
       owner = "Daviey";
       repo = "claude-task-master";
-      rev = "98ff44da2868aa1d7d6e459274ae438ccef2f930";
-      hash = "sha256-fiLa67kZYevkoXvFQeZVmkiUrpjQDOo61SVvpLFfI0Y=";
+      rev = "2ff9c2db1c66bbbf4fc854e6247f2c077c38ea03";
+      hash = "sha256-J2kUIpewTDOY5EuHI4b5VF3ysCYp/Ss0X01L8efkM/Q=";
     };
     dontBuild = true;
     installPhase = ''
